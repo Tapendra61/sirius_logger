@@ -14,7 +14,10 @@ namespace sr {
 
 	inline void format_impl(std::string& out, const std::string& fmt) {
 		out += fmt;
+		
 	}
+
+	template<typename >
 
 	template <typename... Args>
 	inline std::string format(const std::string& fmt, Args&&... args) {

@@ -1,7 +1,0 @@
-<Solution>
-  <Configurations>
-    <Platform Name="x64" />
-    <Platform Name="x86" />
-  </Configurations>
-  <Project Path="sirius_logger.vcxproj" Id="cfca78d5-b442-4f85-ab0f-7912ba6f9b12" />
-</Solution>
