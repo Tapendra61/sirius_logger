@@ -52,6 +52,5 @@ ipch/
 *.bak
 *.swp
 
-# Dependency directories (if using vcpkg, Conan, etc.)
-vcpkg_installed/
-conan/
+# clang
+.clang-format
