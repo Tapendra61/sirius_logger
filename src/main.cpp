@@ -1,11 +1,10 @@
 #include <iostream>
-#include "../include/formatter.h"
+#include "../include/log.h"
 
 int main() {
 	std::cout << "Sirius Logger." << std::endl;
 	
-	std::string res = sr::format("Hello {}", "Tapendra");
-	std::cout << res << std::endl;
+	sr::log_info("Hello {}. This is a test for log info. Number 1: {}. Double: {}. Float: {}. Boolean: {}.", "Tapendra", 24, 2.4, 2.4f, true);
 	
 	return 0;
 }
