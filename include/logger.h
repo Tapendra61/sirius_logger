@@ -3,6 +3,7 @@
 #include "formatter.h"
 #include <ctime>
 #include <iomanip>
+#include <mutex>
 #include <ostream>
 #include <chrono>
 #include <sstream>
@@ -15,6 +16,7 @@ class Logger {
   private:
 	std::ostream &output_;
 	LogLevel level_ = LogLevel::Trace;
+	std::mutex mtx_;
 
   public:
 	explicit Logger(std::ostream &output) : output_(output) {}
@@ -26,6 +28,8 @@ class Logger {
 		if (level < level_)
 			return;
 
+		std::lock_guard<std::mutex> lock(mtx_);
+		
 		output_ << "[" << get_current_timestamp() << "]" << "[" << level_to_string(level) << "]"
 				<< format(fmt, std::forward<Args>(args)...) << "\n";
 	}
