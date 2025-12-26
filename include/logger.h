@@ -1,7 +1,12 @@
 #pragma once
 
 #include "formatter.h"
+#include <ctime>
+#include <iomanip>
 #include <ostream>
+#include <chrono>
+#include <sstream>
+#include <string>
 
 namespace sr {
 enum class LogLevel { Trace, Info, Warning, Error, Fatal };
@@ -21,7 +26,7 @@ class Logger {
 		if (level < level_)
 			return;
 
-		output_ << "[" << level_to_string(level) << "]"
+		output_ << "[" << get_current_timestamp() << "]" << "[" << level_to_string(level) << "]"
 				<< format(fmt, std::forward<Args>(args)...) << "\n";
 	}
 
@@ -40,6 +45,17 @@ class Logger {
 			return "Fatal";
 		}
 		return "Unknown";
+	}
+	
+	std::string get_current_timestamp() {
+		std::ostringstream oss;
+		
+		std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
+		std::time_t c_time_now = std::chrono::system_clock::to_time_t(now);
+		std::tm local_tm = *std::localtime(&c_time_now);
+		oss << std::put_time(&local_tm, "%Y-%m-%d %H:%M:%S");
+		
+		return oss.str();
 	}
 };
 } // namespace sr
