@@ -1,13 +1,17 @@
 #pragma once
 
 #include "formatter.h"
+#include "sink.h"
 #include <chrono>
 #include <ctime>
 #include <iomanip>
+#include <memory>
 #include <mutex>
 #include <ostream>
 #include <sstream>
 #include <string>
+#include <utility>
+#include <vector>
 
 namespace sr {
 enum class LogLevel { Trace, Info, Warning, Error, Fatal };
@@ -22,12 +26,11 @@ struct LogColors {
 
 class Logger {
   private:
-	std::ostream &output_;
+	std::vector<std::unique_ptr<Sink>> sinks_;
 	LogLevel level_ = LogLevel::Trace;
 	std::mutex mtx_;
 
   public:
-	explicit Logger(std::ostream &output) : output_(output) {}
 
 	void set_level(LogLevel level) { level_ = level; }
 
@@ -38,9 +41,17 @@ class Logger {
 
 		std::lock_guard<std::mutex> lock(mtx_);
 
-		output_ << "[" << get_current_timestamp() << "]" << "["
-				<< get_log_color(level) << level_to_string(level) << LogColors::reset << "]"
-				<< format(fmt, std::forward<Args>(args)...) << "\n";
+		std::string message = "[" + get_current_timestamp() + "]" + "[" +
+							  level_to_string(level) + "]" +
+							  format(fmt, std::forward<Args>(args)...);
+									
+		for(auto& sink: sinks_) {
+			sink->write(message);
+		}
+	}
+
+	void add_sink(std::unique_ptr<Sink> sink) {
+		sinks_.push_back(std::move(sink));
 	}
 
   private:
