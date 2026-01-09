@@ -20,7 +20,7 @@ inline void format_impl(std::string &out, const std::string &fmt) {
 
 template <typename T, typename... Args>
 inline void format_impl(std::string &out, const std::string &fmt, T &&value,
-						Args&&... args) {
+						Args &&...args) {
 	const size_t pos = fmt.find("{}");
 
 	if (pos == std::string::npos) {
@@ -33,7 +33,7 @@ inline void format_impl(std::string &out, const std::string &fmt, T &&value,
 }
 
 template <typename... Args>
-inline std::string format(const std::string &fmt, Args&&... args) {
+inline std::string format(const std::string &fmt, Args &&...args) {
 	std::string result;
 	result.reserve(fmt.size() + 32);
 	format_impl(result, fmt, std::forward<Args>(args)...);

@@ -2,14 +2,12 @@
 #include "console_sink.h"
 #include "file_sink.h"
 #include "logger.h"
-#include "sink.h"
 #include <iostream>
 #include <memory>
 
 inline sr::Logger g_logger{};
 
 namespace sr {
-
 
 inline void init_logger(LogLevel level = LogLevel::Trace,
 						const std::string &file_path = "") {

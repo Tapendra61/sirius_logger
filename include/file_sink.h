@@ -1,6 +1,8 @@
 #pragma once
 
+#include "log_level.h"
 #include "sink.h"
+#include "timestamp.h"
 #include <fstream>
 #include <string_view>
 
@@ -13,8 +15,9 @@ class FileSink final : public Sink {
 	explicit FileSink(const std::string &path)
 		: file_(path, std::ios::out | std::ios::app) {}
 
-	void write(std::string_view message) override {
-		file_ << message << "\n";
+	void write(LogLevel &level, std::string_view message) override {
+		file_ << "[" << get_current_timestamp() << "]" << "["
+			  << level_to_string(level) << "]" << message << "\n";
 		file_.flush();
 	}
 };
