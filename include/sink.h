@@ -8,6 +8,6 @@ class Sink {
   public:
 	virtual ~Sink() = default;
 
-	virtual void write(LogLevel &level, std::string_view message) = 0;
+	virtual void write(const LogLevel level, const std::string_view message) = 0;
 };
 } // namespace sr

@@ -12,7 +12,7 @@ class ConsoleSink final : public Sink {
 
   public:
 	explicit ConsoleSink(std::ostream &out) : out_(out) {}
-	void write(LogLevel &level, std::string_view message) override {
+	void write(const LogLevel level, const std::string_view message) override {
 		out_ << "[" << get_current_timestamp() << "]" << "["
 			 << get_log_color(level) << level_to_string(level)
 			 << LogColors::reset << "]" << message << "\n";

@@ -15,7 +15,7 @@ class FileSink final : public Sink {
 	explicit FileSink(const std::string &path)
 		: file_(path, std::ios::out | std::ios::app) {}
 
-	void write(LogLevel &level, std::string_view message) override {
+	void write(const LogLevel level, const std::string_view message) override {
 		file_ << "[" << get_current_timestamp() << "]" << "["
 			  << level_to_string(level) << "]" << message << "\n";
 		file_.flush();
